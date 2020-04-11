@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Patatap</title>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.3/howler.core.min.js
+
+    "></script>
+ 
+    <script type="text/javascript" src="paper-full.min.js"></script>
+    <script type="text/paperscript" canvas='myCanvas'>
+
+        var x=100 , y=100; //cordinates;
+        var circles = []; // to store the new circles generated;
+
+//keyData object is used for the mapping of each key from a-z with a sound effect using Howl library;
+        var keyData = {
+            a:{
+                sound : new Howl({ src:['./A/bubbles.mp3'] })
+            },
+
+            s:{
+                sound : new Howl({ src:['./A/corona.mp3'] })
+            },
+            d:{
+                sound : new Howl({ src:['./A/confetti.mp3'] })
+            },
+            f:{
+                sound : new Howl({ src:['./A/clay.mp3'] })
+            },
+            g:{
+                sound : new Howl({ src:['./A/bubbles.mp3'] })
+            },
+
+            h:{
+                sound : new Howl({ src:['./A/corona.mp3'] })
+            },
+            j:{
+                sound : new Howl({ src:['./A/confetti.mp3'] })
+            },
+            k:{
+                sound : new Howl({ src:['./A/dotted-spiral.mp3'] })
+            },
+            
+            l:{
+                sound : new Howl({ src:['./A/flash-1.mp3'] })
+            },
+
+            q:{
+                sound : new Howl({ src:['./A/flash-2.mp3'] })
+            },
+            
+            w:{
+                sound : new Howl({ src:['./A/flash-3.mp3'] })
+            },
+            
+            e:{
+                sound : new Howl({ src:['./A/glimmer.mp3'] })
+            },
+            
+            r:{
+                sound : new Howl({ src:['./A/moon.mp3'] })
+            },
+
+            t:{
+                sound : new Howl({ src:['./A/pinwheel.mp3'] })
+            },
+            
+            y:{
+                sound : new Howl({ src:['./A/piston-1.mp3'] })
+            },
+            
+            u:{
+                sound : new Howl({ src:['./A/piston-2.mp3'] })
+            },
+
+            i:{
+                sound : new Howl({ src:['./A/piston-3.mp3'] })
+            },
+            
+            o:{
+                sound : new Howl({ src:['./A/prism-1.mp3'] })
+            },
+
+            p:{
+                sound : new Howl({ src:['./A/prism-2.mp3'] })
+            },
+            
+            z:{
+                sound : new Howl({ src:['./A/prism-3.mp3'] })
+            },
+            
+            x:{
+                sound : new Howl({ src:['./A/splits.mp3'] })
+            },
+            
+            c:{
+                sound : new Howl({ src:['./A/squiggle.mp3'] })
+            },
+
+            v:{
+                sound : new Howl({ src:['./A/strike.mp3'] })
+            },
+            
+            b:{
+                sound : new Howl({ src:['./A/suspension.mp3'] })
+            },
+            
+            n:{
+                sound : new Howl({ src:['./A/timer.mp3'] })
+            },
+            
+            m:{
+                sound : new Howl({ src:['./A/ufo.mp3'] })
+            }
+        };
+        
+        function onKeyDown(event){
+
+            if(keyData[event.key]){ //to restrict key effect for those keys which are not in keyData object;
+            
+            var maxPoint = new Point(view.size.width , view.size.height);
+            var randomPoint = Point.random();
+            var xyPoint = new Point(0,0); 
+            xyPoint = maxPoint * randomPoint ;
+            var newCircle = new Path.Circle( xyPoint, 500);
+            newCircle.fillColor = generate_rgb(); // generate_rgb() generate a random color for every circle;
+            keyData[event.key].sound.play(); //playing sound with respect to the key pressed;
+
+            if(circles.length >= 100){ 
+                // myflush() function will deleted the already executed circles from array named circles
+                myflush();
+            }
+            circles.push(newCircle);
+            console.log(circles.length);
+            }
+        }
+
+        
+
+        function generate_rgb() {
+            var str = "rgb(";
+            var r = Math.floor(Math.random() * 256);
+            var g = Math.floor(Math.random() * 256);
+            var b = Math.floor(Math.random() * 256);        
+            // rgb(r, g, b);
+            var comma_space = ", "
+            return ("rgb(" + String(r) + comma_space + String(g) + comma_space + String(b) + ")");
+        }
+
+        function myflush(){
+            circles.splice(0,circles.length/2);
+            console.log('after  splice' , circles.length);
+        }
+
+// animations settings in onFrame();
+
+        function onFrame(event){
+
+            for(var i=0 ; i<circles.length ; i++){
+                circles[i].scale(0.9);
+                circles[i].fillColor.hue +=3;
+
+            }
+
+        }
+        
+
+
+        
+    </script>
+
+
+    <style>
+        html , body{
+            height: 100%;
+            width: 100%;
+        }
+
+        canvas{
+            background-color: black;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" resize></canvas>
+</body>
+</html>
+
+
+
+
+
+<!-- 
+        var text = new PointText({
+            point: view.center,
+            content: 'Click here to focus and then press some keys.',
+            justification: 'center',
+            fontSize: 15
+        });
+         -->
